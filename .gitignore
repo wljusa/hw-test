@@ -1,0 +1,10 @@
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+report/
+.env
+*.pyc
+.idea/
+config/instruments.yaml

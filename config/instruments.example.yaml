@@ -1,0 +1,33 @@
+# 本机台架复制为 config/instruments.yaml 后再改。该文件已在 .gitignore 中。
+sim:
+  backend: sim
+  sim_file: sim/bench.yaml
+  timeout_ms: 2000
+  instruments:
+    dmm:
+      resource: ASRL1::INSTR
+      read_termination: "\n"
+      write_termination: "\n"
+    psu:
+      resource: ASRL2::INSTR
+      read_termination: "\n"
+      write_termination: "\n"
+      reset_on_open: true
+      output_off_on_close: true
+      check_errors: true
+
+bench:
+  backend: py
+  timeout_ms: 5000
+  instruments:
+    dmm:
+      resource: TCPIP0::192.168.1.10::inst0::INSTR
+      read_termination: "\n"
+      write_termination: "\n"
+    psu:
+      resource: TCPIP0::192.168.1.11::inst0::INSTR
+      read_termination: "\n"
+      write_termination: "\n"
+      reset_on_open: true
+      output_off_on_close: true
+      check_errors: true

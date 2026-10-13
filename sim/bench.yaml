@@ -1,0 +1,62 @@
+# pyvisa-sim 台架：万用表固定返回 1.234 V，电源可设电压和输出开关。
+spec: "1.1"
+devices:
+  dmm:
+    eom:
+      ASRL INSTR:
+        q: "\n"
+        r: "\n"
+    error:
+      error_queue:
+        - q: "SYST:ERR?"
+          default: '0,"No error"'
+    dialogues:
+      - q: "*IDN?"
+        r: "HWTEST,DMM34401,SN1,1.0"
+      - q: "MEAS:VOLT:DC?"
+        r: "1.234"
+      - q: "*RST"
+      - q: "*CLS"
+  psu:
+    eom:
+      ASRL INSTR:
+        q: "\n"
+        r: "\n"
+    error:
+      error_queue:
+        - q: "SYST:ERR?"
+          default: '0,"No error"'
+          command_error: '1,"Command error"'
+    dialogues:
+      - q: "*IDN?"
+        r: "HWTEST,PSU,SN1,1.0"
+      - q: "*RST"
+      - q: "*CLS"
+    properties:
+      voltage:
+        default: "0"
+        getter:
+          q: "VOLT?"
+          r: "{:.3f}"
+        setter:
+          q: "VOLT {}"
+        specs:
+          min: 0
+          max: 30
+          type: float
+      output:
+        default: "OFF"
+        getter:
+          q: "OUTP?"
+          r: "{}"
+        setter:
+          q: "OUTP {}"
+        specs:
+          type: str
+          valid: ["ON", "OFF"]
+
+resources:
+  ASRL1::INSTR:
+    device: dmm
+  ASRL2::INSTR:
+    device: psu
